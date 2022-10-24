@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/Models/item.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,9 +31,22 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
-  // const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  var items = <Item>[];
 
+  HomePage() {
+    items = [];
+    items.add(Item(title: "Preparar curriculo", done: false));
+    items.add(Item(title: "Melhorar curriculo", done: true));
+    items.add(Item(title: "Mandar curriculos", done: false));
+  }
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  // const HomePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,9 +56,19 @@ class HomePage extends StatelessWidget {
         //   Icon(Icons.plus_one),
         // ],
       ),
-      body: const Center(
-        child: Text("Hello world"),
-      ),
+      body: ListView.builder(
+          itemCount: widget.items.length,
+          itemBuilder: (BuildContext ctxt, int index) {
+            final item = widget.items[index];
+            return CheckboxListTile(
+              title: Text(item.title),
+              key: Key(item.title),
+              value: item.done,
+              onChanged: (value) {
+                print(value);
+              },
+            );
+          }),
     );
   }
 }
