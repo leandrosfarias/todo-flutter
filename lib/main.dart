@@ -46,12 +46,32 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // const HomePage({Key? key}) : super(key: key);
+  var newTaskCtrl = TextEditingController();
+
+  void add() {
+    if (newTaskCtrl.text.isEmpty) return;
+    setState(() {
+      widget.items.add(Item(title: newTaskCtrl.text, done: false));
+      newTaskCtrl.clear();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Todo List"),
+        title: TextFormField(
+          controller: newTaskCtrl,
+          keyboardType: TextInputType.text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+          ),
+          decoration: const InputDecoration(
+            labelText: "Nova tarefa",
+            labelStyle: TextStyle(color: Colors.white),
+          ),
+        ),
         // actions: const <Widget>[
         //   Icon(Icons.plus_one),
         // ],
@@ -71,6 +91,11 @@ class _HomePageState extends State<HomePage> {
               },
             );
           }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: add,
+        backgroundColor: Colors.pink,
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
